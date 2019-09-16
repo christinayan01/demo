@@ -1,0 +1,31 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\RenderImageScript.cs">
+    <Files>
+      <File FileName="Assets\OpenFileScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\TextureScale.cs" Line="1" Column="1" />
+      <File FileName="Assets\ButtonScript.cs" Line="14" Column="7" />
+      <File FileName="Assets\RenderImageScript.cs" Line="88" Column="42" />
+      <File FileName="Assets\SaveImageScript.cs" Line="18" Column="45" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\OpenFileScript.cs" line="64" column="3" />
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\OpenFileScript.cs" line="87" column="14" />
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\OpenFileScript.cs" line="85" column="39" />
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\OpenFileScript.cs" line="85" column="6" />
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\OpenFileScript.cs" line="85" column="2" />
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\OpenFileScript.cs" line="76" column="5" />
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\OpenFileScript.cs" line="46" column="32" />
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\TextureScale.cs" line="40" column="13" />
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\TextureScale.cs" line="41" column="3" />
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\OpenFileScript.cs" line="47" column="9" />
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\OpenFileScript.cs" line="48" column="2" />
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\RenderImageScript.cs" line="88" column="10" />
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\RenderImageScript.cs" line="220" column="8" />
+      <Breakpoint file="F:\Unity\Projects\EquiAjust2\Assets\RenderImageScript.cs" line="105" column="3" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
