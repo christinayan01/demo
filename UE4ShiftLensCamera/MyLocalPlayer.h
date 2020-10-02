@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 // Created by christinayan01 by Takahiro Yanai. 2020.10.2
 
+// 備考ソースは --> から <-- の間だけ、あなたのC++クラスにコピペして下さい。
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -14,7 +16,7 @@ UCLASS()
 class SHIFTLENS1_API UMyLocalPlayer : public ULocalPlayer
 {
 	GENERATED_BODY()
-
+//// -->
 	FSceneView* CalcSceneView(class FSceneViewFamily* ViewFamily,
 		FVector& OutViewLocation,
 		FRotator& OutViewRotation,
@@ -22,15 +24,14 @@ class SHIFTLENS1_API UMyLocalPlayer : public ULocalPlayer
 		class FViewElementDrawer* ViewDrawer = NULL,
 		EStereoscopicPass StereoPass = eSSP_FULL) override;
 
-	UMyLocalPlayer() : _flag(false), _shiftLensValue(0.f) {}
+	//UMyLocalPlayer() : _flag(false), _shiftLensValue(0.f) {}
 
 	bool _flag;
-
 	// あおり補正　シフトレンズカメラの値。範囲は -1.0～0.0　です
 	float _shiftLensValue;
 	
-
 protected:
 	//virtual void BeginPlay() override;
 	virtual void PostInitProperties() override;
+//// <--
 };
