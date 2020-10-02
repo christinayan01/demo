@@ -27,7 +27,7 @@ class SHIFTLENS1_API UMyLocalPlayer : public ULocalPlayer
 	bool _flag;
 
 	// あおり補正　シフトレンズカメラの値。範囲は -1.0～0.0　です
-	double _shiftLensValue;
+	float _shiftLensValue;
 	
 
 protected:
