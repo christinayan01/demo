@@ -15,12 +15,11 @@ C++プロジェクトで開始します。
 　[パブリック]のままでOK  
 [クラスを作成]を押す。  
 
-**３．GitHubのソースを2つ（MyLocalPlayer.hと*MyLocalPlayercpp）を**
+**３．GitHubのソースを2つ（MyLocalPlayer.hと*MyLocalPlayercpp）を**  
 それぞれに対応するファイルにいい感じにコピペします。
 
 **ポイント１**
-１．もう１回、新規でC++クラスを作って下さい。例えばMyLocalPlayer2とかです。
-２．Visual Studioを起動したら、MyLocalPlayer.hに対し、私のGitの.hファイルの18～35行目だけコピペしてください。
+MyLocalPlayer.hに対し、私のGitの.hファイルの **20～35行目だけ** コピペしてください。
 25行目のコンストラクタ「UMyLocalPlayer」は、メスコさんのクラス名に書き直します。
 午後11:32
 ３．cppの方は、私のGitの５行目以降（#include "Engine.h"から。）をコピペです。
