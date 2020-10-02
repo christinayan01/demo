@@ -67,7 +67,7 @@ FSceneView * UMyLocalPlayer::CalcSceneView(FSceneViewFamily * ViewFamily, FVecto
 		float ZNear = GNearClippingPlane;
 
 		FMatrix newMatrix = FMatrix(
-			FPlane(1.0 / FMath::Tan(HalfFov), 0, 0, 0),
+			FPlane(1.f / FMath::Tan(HalfFov), 0, 0, 0),
 			FPlane(0, Width / Height / FMath::Tan(HalfFov), 0, 0),
 			FPlane(0, _shiftLensValue, 0, 1),		// shift lens value.
 			FPlane(0, 0, ZNear, 0)
@@ -78,18 +78,18 @@ FSceneView * UMyLocalPlayer::CalcSceneView(FSceneViewFamily * ViewFamily, FVecto
 
 
 		// 自動であおり補正の値を変更する処理
-		if (_shiftLensValue > 0) {
+		if (_shiftLensValue > 0.f) {
 			_flag = false;
 		}
-		else if (_shiftLensValue < -1) {
+		else if (_shiftLensValue < -1.f) {
 			_flag = true;
 		}
 		
 		if (_flag) {
-			_shiftLensValue += 0.002;
+			_shiftLensValue += 0.002f;
 		}
 		else {
-			_shiftLensValue -= 0.002;
+			_shiftLensValue -= 0.002f;
 		}
 
 		// デバッグ出力(PrintString)
