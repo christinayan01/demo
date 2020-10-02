@@ -2,6 +2,10 @@
 // Created by christinayan01 by Takahiro Yanai. 2020.10.2
 
 #include "MyLocalPlayer.h"
+
+//// 手順１．こっから下をコピペする
+//// 手順２．クラス名「UMyLocalPlayer」を、あなたのC++クラス名に置換して下さい。
+
 #include "Engine.h"
 
 //
@@ -17,7 +21,8 @@ FString FloatToString(float Value)
 void UMyLocalPlayer::PostInitProperties()
 {
 	Super::PostInitProperties();
-	_shiftLensValue = 0.0;
+	_shiftLensValue = 0.f;
+	 _flag = false;
 }
 
 //
