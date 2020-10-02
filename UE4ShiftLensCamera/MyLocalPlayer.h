@@ -22,7 +22,7 @@ class SHIFTLENS1_API UMyLocalPlayer : public ULocalPlayer
 		class FViewElementDrawer* ViewDrawer = NULL,
 		EStereoscopicPass StereoPass = eSSP_FULL) override;
 
-	UMyLocalPlayer() : _shiftLensValue(0.0), _flag(false) {}
+	UMyLocalPlayer() : _shiftLensValue(0.f), _flag(false) {}
 
 	bool _flag;
 
