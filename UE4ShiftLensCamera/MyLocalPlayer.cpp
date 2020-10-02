@@ -4,23 +4,23 @@
 #include "MyLocalPlayer.h"
 #include "Engine.h"
 
-static double _shiftLensValue = 0.0;
-static bool flag = false;
-
-static FString FloatToString(float Value)
+//
+FString FloatToString(float Value)
 {
-	if (FMath::IsNaN(Value))
-	{
+	if (FMath::IsNaN(Value)){
 		return TEXT("0.0f");
 	}
 	return FString::Printf(TEXT("%f"), Value);
 }
+
+//
 void UMyLocalPlayer::PostInitProperties()
 {
 	Super::PostInitProperties();
 	_shiftLensValue = 0.0;
 }
 
+//
 FSceneView * UMyLocalPlayer::CalcSceneView(FSceneViewFamily * ViewFamily, FVector &OutViewLocation, FRotator &OutViewRotation, FViewport * Viewport, FViewElementDrawer * ViewDrawer, EStereoscopicPass StereoPass)
 {
 	FSceneView* View = ULocalPlayer::CalcSceneView(ViewFamily, OutViewLocation, OutViewRotation, Viewport, ViewDrawer, StereoPass);
@@ -60,7 +60,7 @@ FSceneView * UMyLocalPlayer::CalcSceneView(FSceneViewFamily * ViewFamily, FVecto
 		//FIntRect Rect = View->SceneViewInitOptions.GetViewRect();
 */
 		float Fov = View->FOV;// 90.f;
-		Fov = PlayerController->PlayerCameraManager->GetFOVAngle(); // �ǂ�������H
+		Fov = PlayerController->PlayerCameraManager->GetFOVAngle(); // どっちだろ？
 		float HalfFov = FMath::DegreesToRadians(Fov) / 2.f;
 		float Width = ViewportClient->Viewport->GetSizeXY().X;	// Rect.Width();
 		float Height = ViewportClient->Viewport->GetSizeXY().Y;	// Rect.Height();
@@ -73,30 +73,32 @@ FSceneView * UMyLocalPlayer::CalcSceneView(FSceneViewFamily * ViewFamily, FVecto
 			FPlane(0, 0, ZNear, 0)
 		);
 
+		// ここでプロジェクションマトリクスを更新します
+		View->UpdateProjectionMatrix(newMatrix);
 
+
+		// 自動であおり補正の値を変更する処理
 		if (_shiftLensValue > 0) {
-			flag = false;
+			_flag = false;
 		}
 		else if (_shiftLensValue < -1) {
-			flag = true;
+			_flag = true;
 		}
 		
-		if (flag) {
+		if (_flag) {
 			_shiftLensValue += 0.002;
 		}
 		else {
 			_shiftLensValue -= 0.002;
 		}
 
-		View->UpdateProjectionMatrix(newMatrix);
-
-
-
+		// デバッグ出力(PrintString)
+		/*
 		FString Message = newMatrix.ToString();
-		//Message = FloatToString(View->FOV);
-		Message = FString("�����苭����") + FloatToString(_shiftLensValue);
+		Message = FloatToString(View->FOV);
+		Message = FString("あおり強さ＝") + FloatToString(_shiftLensValue);
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, Message);
-
+		*/
 	}
 
 	return View;
