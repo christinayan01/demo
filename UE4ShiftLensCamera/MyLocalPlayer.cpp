@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 //// 手順１．■■■印から下をコピペする
-//// 手順２．クラス名「UMyLocalPlayer」を、あなたのC++クラス名に置換して下さい。
+//// 手順２．コメント「replace class name」に書かれたクラス名「UMyLocalPlayer」を、あなたのC++クラス名に置換して下さい。
 //// 手順３．★印の箇所を、好きな値に変更します。-0.8くらいだといい感じかも。
 
 #include "MyLocalPlayer.h"
@@ -10,7 +10,7 @@
 #include "Engine.h"
 
 //
-void UMyLocalPlayer::PostInitProperties()
+void UMyLocalPlayer::PostInitProperties()	// replace class name
 {
 	Super::PostInitProperties();
 	_shiftLensValue = 0.f;	// ★好きな値をセットしてください。
@@ -18,7 +18,13 @@ void UMyLocalPlayer::PostInitProperties()
 }
 
 //
-FSceneView * UMyLocalPlayer::CalcSceneView(FSceneViewFamily * ViewFamily, FVector &OutViewLocation, FRotator &OutViewRotation, FViewport * Viewport, FViewElementDrawer * ViewDrawer, EStereoscopicPass StereoPass)
+FSceneView * UMyLocalPlayer::CalcSceneView(	// replace class name
+	FSceneViewFamily * ViewFamily, 
+	FVector &OutViewLocation, 
+	FRotator &OutViewRotation, 
+	FViewport * Viewport, 
+	FViewElementDrawer * ViewDrawer, 
+	EStereoscopicPass StereoPass)
 {
 	FSceneView* View = ULocalPlayer::CalcSceneView(ViewFamily, OutViewLocation, OutViewRotation, Viewport, ViewDrawer, StereoPass);
 	if (View) {
