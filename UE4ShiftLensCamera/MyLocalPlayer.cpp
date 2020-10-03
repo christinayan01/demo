@@ -26,10 +26,10 @@ FSceneView * UMyLocalPlayer::CalcSceneView(	// replace class name
 	FViewElementDrawer * ViewDrawer, 
 	EStereoscopicPass StereoPass)
 {
-	FSceneView* View = ULocalPlayer::CalcSceneView(ViewFamily, OutViewLocation, OutViewRotation, Viewport, ViewDrawer, StereoPass);
+	FSceneView* View = Super::CalcSceneView(ViewFamily, OutViewLocation, OutViewRotation, Viewport, ViewDrawer, StereoPass);
 	if (View) {
-		float Fov = View->FOV;// 90.f;
-		Fov = PlayerController->PlayerCameraManager->GetFOVAngle(); // たぶんこっち？
+		float Fov = View->FOV;
+		Fov = PlayerController->PlayerCameraManager->GetFOVAngle(); // FOVはどっちが正しいのか？　こっち？
 		
 		float HalfFov = FMath::DegreesToRadians(Fov) / 2.f;
 		float Width = ViewportClient->Viewport->GetSizeXY().X;
