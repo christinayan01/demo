@@ -1,9 +1,10 @@
 <img src="https://christinayan01.jp/architecture/wp-content/uploads/2020/10/ue4_shift_lens_camera.jpg" width=480 height=auto>
 
 **●Shift Lens Camera(あおり補正ができるカメラ)　実装方法**  
+Rev. 0.0.1
 
 ■前提  
-Unreal Engine 4 version **4.24.1**    
+Unreal Engine 4. version **4.24.1**    
 
 ■手順  
 **１．C++プロジェクトで開始します。**   
