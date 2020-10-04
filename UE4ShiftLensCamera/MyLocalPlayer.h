@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 // Created by christinayan01 by Takahiro Yanai. 2020.10.2
 
-// 備考ソースは --> から <-- の間だけ、あなたのC++クラスにコピペして下さい。
+// 備考ソースは ■■■--> から <--■■■ の間だけ、あなたのC++クラスにコピペして下さい。
 
 #pragma once
 
@@ -16,7 +16,7 @@ UCLASS()
 class SHIFTLENS1_API UMyLocalPlayer : public ULocalPlayer
 {
 	GENERATED_BODY()
-//// -->
+//// ■■■-->
 	FSceneView* CalcSceneView(class FSceneViewFamily* ViewFamily,
 		FVector& OutViewLocation,
 		FRotator& OutViewRotation,
@@ -33,5 +33,5 @@ class SHIFTLENS1_API UMyLocalPlayer : public ULocalPlayer
 protected:
 	//virtual void BeginPlay() override;
 	virtual void PostInitProperties() override;
-//// <--
+//// <--■■■
 };

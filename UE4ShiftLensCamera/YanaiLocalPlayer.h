@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 // Created by christinayan01 by Takahiro Yanai. 2020.10.4
+// 【備考】ソースは ■■■--> から <--■■■ の間だけ、あなたのC++クラスにコピペして下さい。
 
 #pragma once
 
@@ -16,6 +17,8 @@ UCLASS()
 class POLYGON_API UYanaiLocalPlayer : public ULocalPlayer
 {
 	GENERATED_BODY()
+
+//// ■■■-->
 
 public:
 
@@ -49,5 +52,7 @@ private:
 
 	// プロジェクションマトリクスにあおり補正値を適用
 	void ApplyShiftLens(FSceneView* View);
+
+//// <--■■■
 
 };
