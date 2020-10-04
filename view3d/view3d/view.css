@@ -1,0 +1,16 @@
+.img-radius {
+    border-radius: 50%;  /* 角丸半径を50%にする(=円形にする) */
+    width:  100px;       /* ※縦横を同値に */
+    height: 100px;       /* ※縦横を同値に */
+
+	margin-left: 50px;
+	margin-right: 50px;
+
+	border: 2px solid rgba(255,255,255,.1);
+}
+
+.img-box {
+    /*position: absolute;*/
+    bottom: 20px;
+	left: 25%;
+}
