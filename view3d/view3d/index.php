@@ -60,7 +60,7 @@ $out .= '<br>';
 // debug <--
 
 	$out .= '<br><iframe src="';
-	$out .= $url_dir . $plugin_dir . 'view.php?dir=';
+	$out .= $url_dir . $plugin_dir . 'view.php?dir=data/';
 	$out .= $arg_dir;
     $out .= '&name=';
 	$out .= $arg_name;
