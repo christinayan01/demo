@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-// Created by christinayan01 by Takahiro Yanai. 2020.10.4
-/* 手順１．■■■印から下をコピペする
+/* Created by christinayan01 by Takahiro Yanai. 2020.10.4
+   https://christinayan01.jp/architecture/ | ARCHITECTURE GRAVURE
+
+   手順１．■■■印から下をコピペする
    手順２．クラス名が異なるときは、「UYanaiLocalPlayer」の箇所を、あなたのC++クラス名に置換して下さい。
            クラス名とは.hファイルの↓の部分です
            class POLYGON_API UYanaiLocalPlayer : public ULocalPlayer

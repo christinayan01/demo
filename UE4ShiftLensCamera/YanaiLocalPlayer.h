@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-// Created by christinayan01 by Takahiro Yanai. 2020.10.4
-// 【備考】ソースは ■■■--> から <--■■■ の間だけ、あなたのC++クラスにコピペして下さい。
+/*	Created by christinayan01 by Takahiro Yanai. 2020.10.4
+	https://christinayan01.jp/architecture/ | ARCHITECTURE GRAVURE
+
+	【備考】ソースは ■■■--> から <--■■■ の間だけ、あなたのC++クラスにコピペして下さい。
+ */
 
 #pragma once
 
