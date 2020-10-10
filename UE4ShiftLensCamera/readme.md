@@ -1,46 +1,15 @@
 <img src="https://christinayan01.jp/architecture/wp-content/uploads/2020/10/ue4_shift_lens_camera.jpg" width=480 height=auto>
 
 **●Shift Lens Camera(あおり補正ができるカメラ)　実装方法**  
-Rev. 0.0.1
+Version. 0.9.0
 
 ■前提  
 Unreal Engine 4. version **4.24.1**    
 
-■手順  
-**１．C++プロジェクトで開始します。**   
-ブループリントのプロジェクトの場合は、  
-　メニュの[ファイル]→[新規C++クラス]で作成できると思います。  
+■前提  
+Unreal Engine 4. version **4.24.1**    
 
-**２．UE4エディタ。コンテンツブラウザで、**  
-[新規追加]→[新規C++クラス]を選択し、  
-右上にある[全てのクラスを表示]チェックボックスをON。  
-「LocalPlaer」を選択して、[次へ]を押す。  
-　[ファイル名]は何でもOK。  
-　[パブリック]のままでOK  
-[クラスを作成]を押す。  
-
-**３．GitHubのソースを2つ（MyLocalPlayer.hと*MyLocalPlayercpp）を**  
-それぞれに対応するファイルにいい感じにコピペします。  
-具体的な手順は.hと.cppファイル内のコメントに記述しています。
-
-**４．あおり補正(レンズシフト)の大きさ**  
-MyLocalPlayer.cppにある「_shiftLensValue」の値を書き換えてください。  
-値の範囲は、建築用途ならば　-1.0～0.0　が実用的です。  
-　　0.0：いつもどおりの表現  
-　 -1.0：あおりMAX！  
-
-　※プログラムを何も変更しないと-1.0～0.0を行ったり来たりします。  →停止しました。
-
-あとはコンパイルします。  
-
-**５．UE4エディタにもどり、**  
-　メニュの[編集]→[プロジェクト設定]を開き、[エンジン]の[基本設定]を開いて、[デフォルトクラス]の中に[Local Player Class]があるので  
-　自分が作成したC++クラス「MyLocalPlayer」に変更します。  
-
-
-これで完了。  
-UE4エディタPlayしてみてください。  
-
+<iframe width="640" height="360" src="https://www.youtube.com/embed/tHH9NRKzOhw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 **トラブルが起きたとき**
 
