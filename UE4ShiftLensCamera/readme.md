@@ -7,9 +7,13 @@ Version. 0.9.0
 Unreal Engine 4. version **4.24.1**    
 
 ■手順  
+
+https://youtu.be/tHH9NRKzOhw
+
 [![Watch the video](https://img.youtube.com/vi/tHH9NRKzOhw/0.jpg)](https://youtu.be/tHH9NRKzOhw)
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/tHH9NRKzOhw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+■解説サイト  
+https://christinayan01.jp/architecture/archives/16309
 
 **トラブルが起きたとき**
 
