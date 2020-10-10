@@ -4,41 +4,24 @@
 #include "ShiftLensCineCameraComponent.h"
 
 #include "Engine.h"
-#include "ShiftLensLocalPlayer.h"
 
 UShiftLensCineCameraComponent::UShiftLensCineCameraComponent()
 	: Super()
 {
-	//this->ShiftLens = 0.0f;
-	// ƒJƒƒ‰ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì‰ŠúˆÊ’u‚ğ“¾‚½‚¢...
-	//if (ProxyMeshComponent) {
-	//	const FTransform ParentWorld = CalcNewComponentToWorld(FTransform());
-	//	this->LocationZ = this->ProxyMeshComponent->GetComponentToWorld().GetLocation().Z;
-	//	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, FString::Printf(TEXT("222=%f"), 
-	//		this->ProxyMeshComponent->GetComponentToWorld().GetLocation().Z));
-	//	this->LocationZ = ParentWorld.GetLocation().Z;
-	//	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, FString::Printf(TEXT("333=%f"), 
-	//		ParentWorld.GetLocation().Z));
-	//}
-	//this->LocationZ = this->GetComponentLocation().Z;
 }
 
-// ƒvƒŒƒrƒ…[Œü‚¯‚Ìˆ—
+// ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼å‘ã‘ã®å‡¦ç†
 void UShiftLensCineCameraComponent::GetCameraView(float DeltaTime, FMinimalViewInfo& DesiredView)
 {
 	Super::GetCameraView(DeltaTime, DesiredView);
 
-	//
+	// Update shift lens
 	DesiredView.OffCenterProjectionOffset.Y = this->ShiftLens;
 	UpdateShiftLens();
-	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, FString("GetCameraView"));
 
-	//
+	// Keep Horizontal
 	if (KeepHorizon) {
-		//FRotator Rotator = DesiredView.Rotation;
-		//Rotator.Pitch
 		DesiredView.Rotation.Pitch = 0.0f;
-		//DesiredView.Location.Z = LocationZ;// this->GetComponentLocation().Z;
 	}
 }		
 
@@ -48,10 +31,10 @@ void UShiftLensCineCameraComponent::SetShiftLens(float InShiftLens)
 	ShiftLens = InShiftLens; 
 }
 
-// ƒVƒtƒgƒŒƒ“ƒYƒJƒƒ‰‚ÌXV
+// ã‚·ãƒ•ãƒˆãƒ¬ãƒ³ã‚ºã‚«ãƒ¡ãƒ©ã®æ›´æ–°
 void UShiftLensCineCameraComponent::UpdateShiftLens()
 {
-	// ƒGƒfƒBƒ^‚©‚ç‚ÌƒR[ƒ‹HHH
+	// ã‚¨ãƒ‡ã‚£ã‚¿ã‹ã‚‰ã®ã‚³ãƒ¼ãƒ«ï¼Ÿï¼Ÿï¼Ÿ
 	AActor* Owner = GetOwner();
 	APawn* OwningPawn = Cast<APawn>(GetOwner());
 	AController* OwningController = OwningPawn ? OwningPawn->GetController() : nullptr;
@@ -62,15 +45,15 @@ void UShiftLensCineCameraComponent::UpdateShiftLens()
 		ULocalPlayer* LocalPlayer = Context.GetLocalPlayer();
 		if (LocalPlayer)
 		{
-			UShiftLensLocalPlayer* ShiftLensLocalPlayer = Cast<UShiftLensLocalPlayer>(LocalPlayer);
-			if (ShiftLensLocalPlayer)
-			{
+//			UShiftLensLocalPlayer* ShiftLensLocalPlayer = Cast<UShiftLensLocalPlayer>(LocalPlayer);
+//			if (ShiftLensLocalPlayer)
+//			{
 //				ShiftLensLocalPlayer->SetShiftLens(this->ShiftLens);
-			}
+//			}
 		}
 	}
 
-	// ƒvƒŒƒC’†‚ÌƒR[ƒ‹‚Í‚±‚Á‚¿HHH
+	// ãƒ—ãƒ¬ã‚¤ä¸­ã®ã‚³ãƒ¼ãƒ«ã¯ã“ã£ã¡ï¼Ÿï¼Ÿï¼Ÿ
 	UWorld* World = Owner->GetWorld();
 	for (FConstPlayerControllerIterator Iterator = World->GetPlayerControllerIterator(); Iterator; ++Iterator)
 	{
@@ -78,16 +61,16 @@ void UShiftLensCineCameraComponent::UpdateShiftLens()
 		if (PlayerController && PlayerController->PlayerCameraManager)
 		{
 			//AActor* ViewTarget = PlayerController->GetViewTarget();
-			//if (ViewTarget == this) 	// b’èFƒrƒ…[ƒ|[ƒg•\¦‚Ég—p‚µ‚Ä‚¢‚éƒJƒƒ‰‚¾‚¯ˆ—‚Å‚«‚é
+			//if (ViewTarget == this) 	// æš«å®šï¼šãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆè¡¨ç¤ºã«ä½¿ç”¨ã—ã¦ã„ã‚‹ã‚«ãƒ¡ãƒ©ã ã‘å‡¦ç†ã§ãã‚‹
 			//{
 			ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer();
 			if (LocalPlayer)
 			{
-				UShiftLensLocalPlayer* ShiftLensLocalPlayer = Cast<UShiftLensLocalPlayer>(LocalPlayer);
-				if (ShiftLensLocalPlayer)
-				{
+//				UShiftLensLocalPlayer* ShiftLensLocalPlayer = Cast<UShiftLensLocalPlayer>(LocalPlayer);
+//				if (ShiftLensLocalPlayer)
+//				{
 //					ShiftLensLocalPlayer->SetShiftLens(this->ShiftLens);
-				}
+//				}
 			}
 			//}
 		}
