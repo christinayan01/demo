@@ -6,7 +6,6 @@ Last Update 2020.10.10
 Unreal Engine 4. version **4.25.1**    
 
 ■手順  
-
 https://youtu.be/tHH9NRKzOhw
 
 [![Watch the video](https://img.youtube.com/vi/tHH9NRKzOhw/0.jpg)](https://youtu.be/tHH9NRKzOhw)
@@ -14,7 +13,7 @@ https://youtu.be/tHH9NRKzOhw
 ■解説サイト  
 https://christinayan01.jp/architecture/archives/16309
 
-**トラブルが起きたとき**
 
+**トラブルが起きたとき**  
 ●プロジェクトが起動できなくなった。  
 →プロジェクトフォルダの「Binary」フォルダを削除してみてください。
