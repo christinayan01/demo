@@ -2,11 +2,8 @@
 
 
 #include "ShiftLensCineCameraActor.h"
-//#include "CineCameraComponent.h"
 #include "ShiftLensCineCameraComponent.h"
-
 #include "Engine.h"
-#include "ShiftLensLocalPlayer.h"
 
 //
 AShiftLensCineCameraActor::AShiftLensCineCameraActor(const FObjectInitializer& ObjectInitializer)
@@ -27,13 +24,13 @@ void AShiftLensCineCameraActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-// ƒVƒtƒg’l‚ð“¾‚é(ƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŽ‚Á‚Ä‚¢‚é)
+// ã‚·ãƒ•ãƒˆå€¤ã‚’å¾—ã‚‹(ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒæŒã£ã¦ã„ã‚‹)
 float AShiftLensCineCameraActor::GetShiftLens()
 {
 	return this->ShiftLensCineCameraComponent->ShiftLens;
 }
 
-// ƒVƒtƒgƒŒƒ“ƒYƒJƒƒ‰‚ÌXV
+// ã‚·ãƒ•ãƒˆãƒ¬ãƒ³ã‚ºã‚«ãƒ¡ãƒ©ã®æ›´æ–°
 void AShiftLensCineCameraActor::UpdateShiftLens()
 {
 	this->ShiftLensCineCameraComponent->UpdateShiftLens();
