@@ -1,0 +1,29 @@
+d:
+cd D:\python\annoy
+
+rem ####
+
+pip install ipython
+
+rem pip install tensorflow
+rem pip uninstall tensorflow-gpu
+pip install tensorflow-gpu==1.15
+pip install keras==2.2.1
+
+pip install pillow
+
+rem jupyter notebook
+pip install jupyter
+pip install environment_kernels
+
+pip install annoy
+
+
+d:
+cd D:\python\annoy
+python run.py > outlog.txt
+
+rem cuDNN一覧表示
+conda list cudnn
+rem CUDAバージョン
+nvcc -V
