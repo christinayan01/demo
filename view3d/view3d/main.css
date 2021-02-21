@@ -17,9 +17,44 @@ a:hover {
 	text-decoration: underline;
 }
 
-button {
-	cursor: pointer;
-	text-transform: uppercase;
+.button {
+	margin: 4px 12px;
+	padding: 4px 12px;
+	font-size: small; 
+	background-color: rgba(50, 220, 50, 0.25); 
+	color:black;
+}
+
+.is-centered{
+	display: flex;
+}
+
+.notification{
+	font-size: small; 
+	background-color: rgba(0,255,255,0.2); 
+	color:black;
+}
+
+.section {
+    display: inline;
+    /*position: fixed;
+    overflow-y: hidden;
+    width: 100%;*/
+}
+
+.container {
+	margin: 10px;
+    /*left: 0;
+    right: 0;
+    margin: auto;
+    width: 100%;*/
+    position: absolute;
+}
+
+.container-footer {
+	margin: 10px;
+	position: absolute;
+	bottom: 0;
 }
 
 canvas {
