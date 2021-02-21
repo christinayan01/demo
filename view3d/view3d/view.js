@@ -28,6 +28,8 @@ import { GUI } from './threejs/jsm/libs/dat.gui.module.js';
 import { EffectComposer } from './threejs/jsm/postprocessing/EffectComposer.js'; //ssao
 import { SSAOPass } from './threejs/jsm/postprocessing/SSAOPass.js';
 
+import { ShadowMapViewer } from './threejs/jsm/utils/ShadowMapViewer.js';//shadow
+
 var statsEnabled = false;
 var container, stats;
 var camera, scene, renderer, controls;
@@ -36,6 +38,9 @@ var composer;//ssao
 var ssaoPass;//ssao
 var useSSAO = false;//ssao
 var inited = false;
+// shadowmap
+var dirLightShadowMapViewer, spotLightShadowMapViewer;
+var useShadowMapViewer = false; //デバッグ表示
 
 var obj2 = null;
 
@@ -44,14 +49,15 @@ var mesh_ground = null;
 var params = {
 	exposure: 1.0,
 	ground: false,
-	sunrotate: 180,
+	sunIntensity: 1,
+	sunrotate: 135,
 	sunheight: 0.5
 };
 
 var directionalLight = null;
 
 var bbox = null;  // バウンディングボックス
-
+var model_size = 1; // モデル全体のサイズ
 var isAutoRot = false;
 var group_root;
 
@@ -74,7 +80,9 @@ window.addEventListener('load', function(){
 // メイン処理
 function view_main(){
 	init();
-	generateGround();
+	initShadowMapViewers();
+	//initMisc();//shadow
+	//generateGround();
 	setupGUI();
 	animate();
 }
@@ -90,18 +98,34 @@ function setupGUI() {
 			render();
 		} );
 
+	// sun intensity
+	gui.add( params, 'sunIntensity', 0, 10 )
+		.onChange( function () {
+			directionalLight.intensity = params.sunIntensity;
+			render();
+		} );
+
 	// rotate sun
 	gui.add( params, 'sunrotate', 0, 359 )
 		.onChange( function () {
-			directionalLight.position.x = 200 * Math.cos(params.sunrotate * Math.PI / 180);
-			directionalLight.position.z = 200 * Math.sin(params.sunrotate * Math.PI / 180);
+			directionalLight.position.x = model_size * Math.cos(params.sunrotate * Math.PI / 180);
+			//directionalLight.position.y = model_size;
+			directionalLight.position.z = model_size * Math.sin(params.sunrotate * Math.PI / 180);
 			render();
 		} );
 
 	// sun height
 	gui.add( params, 'sunheight', 0, 1 )
 		.onChange( function () {
-			directionalLight.position.y = params.sunheight * 200 * 5;
+			var val = Math.cos(params.sunheight * Math.PI/2);
+			var pos = directionalLight.position;
+			pos.x = model_size * Math.cos(params.sunrotate * Math.PI / 180);
+			pos.y = model_size * Math.sin(params.sunheight * Math.PI/2);
+			pos.z = model_size * Math.sin(params.sunrotate * Math.PI / 180);
+
+			pos.x = pos.x * val;
+			pos.z = pos.z * val;
+			directionalLight.position.set(pos.x ,pos.y, pos.z);
 			render();
 		} );
 
@@ -136,17 +160,37 @@ function setupGUI() {
 
 // create ground.
 function generateGround() {
-	var width = 100;
-	var height = 100;
+	var width = model_size*2;
+	var height = model_size*2;
 	mesh_ground =  new THREE.Mesh(
 					new THREE.PlaneGeometry(width, height, 1, 1),
 					new THREE.MeshLambertMaterial({ 
-					color: 0x999999
+					color: 0x555555
 					})); 
+	var center = bbox.getCenter()
+	mesh_ground.position.set(center.x, 0, center.z);
 	mesh_ground.rotation.x = -Math.PI/2
 	mesh_ground.receiveShadow = true;
-	mesh_ground.visible = params.ground;
+	//mesh_ground.visible = params.ground;
 	scene.add(mesh_ground);
+}
+
+// デバッグ表示
+function initShadowMapViewers() {
+	if (!useShadowMapViewer) {
+		return;
+	}
+	dirLightShadowMapViewer = new ShadowMapViewer( directionalLight );
+	dirLightShadowMapViewer.position.x = 10;
+	dirLightShadowMapViewer.position.y = 150;
+	dirLightShadowMapViewer.size.width = 128;
+	dirLightShadowMapViewer.size.height = 128;
+	dirLightShadowMapViewer.update(); //Required when setting position or size directly
+
+	//spotLightShadowMapViewer = new ShadowMapViewer( spotLight );
+	//spotLightShadowMapViewer.size.set( 256, 256 );
+	//spotLightShadowMapViewer.position.set( 276, 10 );
+	// spotLightShadowMapViewer.update();	//NOT required because .set updates automatically
 }
 
 // 
@@ -198,7 +242,6 @@ function init() {
 	renderer.toneMapping = THREE.ReinhardToneMapping;
 	renderer.toneMappingExposure = 1;
 	renderer.shadowMap.enabled = true;
-	//renderer.shadowMapEnabled = true;
 
 	// background color
 	scene.background = new THREE.Color( 0xcce0ff );
@@ -209,13 +252,65 @@ function init() {
 	scene.add( hemiLight );
 
 	// set sun
+	/*
 	directionalLight = new THREE.DirectionalLight( 0xffffff, 8 );
 	directionalLight.position.set( -200, 200, 0 );
 	directionalLight.castShadow = true;
 	//directionalLight.shadow.mapSize.width  = 1024;
 	//directionalLight.shadow.mapSize.height = 1024;
 	scene.add( directionalLight );
+	*/
+	directionalLight = new THREE.DirectionalLight( 0xffffff, 1 ); //shadow
+	directionalLight.name = 'Dir. Light';
+	directionalLight.position.set(1, 1, 1);
+	directionalLight.castShadow = true;
+	directionalLight.shadow.camera.near = 1;
+	directionalLight.shadow.camera.far = 100;
+	directionalLight.shadow.camera.right = 15;
+	directionalLight.shadow.camera.left = -15;
+	directionalLight.shadow.camera.top	= 15;
+	directionalLight.shadow.camera.bottom = -15;
+	directionalLight.shadow.mapSize.width = 1024;
+	directionalLight.shadow.mapSize.height = 1024;
+	scene.add( directionalLight );
 
+	// shadow test geometry
+	/*
+	// Geometry
+	var geometry = new THREE.TorusKnotBufferGeometry( 25, 8, 75, 20 );
+	var material = new THREE.MeshPhongMaterial( {
+		color: 0xff0000,
+		shininess: 150,
+		specular: 0x222222
+	} );
+
+	torusKnot = new THREE.Mesh( geometry, material );
+	torusKnot.scale.multiplyScalar( 1 / 18 );
+	torusKnot.position.y = 3;
+	torusKnot.castShadow = true;
+	torusKnot.receiveShadow = true;
+	scene.add( torusKnot );
+
+	var geometry = new THREE.BoxBufferGeometry( 3, 3, 3 );
+	cube = new THREE.Mesh( geometry, material );
+	cube.position.set( 8, 3, 8 );
+	cube.castShadow = true;
+	cube.receiveShadow = true;
+	scene.add( cube );
+
+	var geometry = new THREE.BoxBufferGeometry( 10, 0.15, 10 );
+	var material = new THREE.MeshPhongMaterial( {
+		color: 0xa0adaf,
+		shininess: 150,
+		specular: 0x111111
+	} );
+
+	var ground = new THREE.Mesh( geometry, material );
+	ground.scale.multiplyScalar( 3 );
+	ground.castShadow = false;
+	ground.receiveShadow = true;
+	scene.add( ground );
+*/
 	//var str_file = name.split(/\.(?=[^.]+$)/)[0];
 	//var load_path = './' + dir + '/';
 	//var file_path = load_path + str_file;
@@ -284,21 +379,35 @@ function init() {
 			bbox = new THREE.Box3().setFromObject(group);
 			scene.add( group );
 
+			// モデルサイズの一番大きいサイズを得
+			model_size = (bbox.max.x - bbox.min.x > bbox.max.y - bbox.min.y) ? bbox.max.x - bbox.min.x : bbox.max.y - bbox.min.y;
+			if (bbox.max.z - bbox.min.z > model_size) {
+				model_size = bbox.max.z - bbox.min.z;
+			}
+
 			group_root = group;
 			inited = true;
 
+			// 地面の創成。モデルサイズに依存させる
+			generateGround();
+
 			// 初期視線の決定
-			//camera.position.z = bbox.max.z * 5;
 			const offset = 2;
-			var size = (bbox.max.x > bbox.max.y) ? bbox.max.x : bbox.max.y;
-			//var lookAtVector = new THREE.Vector3(0,0, -1);
-			//lookAtVector.applyQuaternion(camera_ortho.quaternion);
-			var lookAtVector = new THREE.Vector3(camera.matrix.elements[8], camera.matrix.elements[9], camera.matrix.elements[10]);
-			camera.position.x = lookAtVector.x * size * offset;	// 近いと途切れるので遠くに移動
+			//var lookAtVector = new THREE.Vector3(camera.matrix.elements[8], camera.matrix.elements[9], camera.matrix.elements[10]);
+			camera.position.x = model_size;	// 近いと途切れるので遠くに移動
 			camera.position.y = bbox.getCenter().y;//lookAtVector.y * size * offset;
-			camera.position.z = lookAtVector.z * size * offset;
+			camera.position.z = model_size;
 			controls.target = bbox.getCenter();
 
+			// シャドウマップカメラのサイズをあわせる
+			directionalLight.position.set( model_size/2, model_size/2, model_size/2);
+			directionalLight.shadow.camera.far    = model_size*3;	
+			directionalLight.shadow.camera.right  = model_size;
+			directionalLight.shadow.camera.left   = -model_size;
+			directionalLight.shadow.camera.top    = model_size;
+			directionalLight.shadow.camera.bottom = -model_size;		
+			// これを呼ぶとシャドウマップカメラの範囲が見える
+			scene.add( new THREE.CameraHelper( directionalLight.shadow.camera ) );
 		} );
 
 	new RGBELoader()
@@ -343,49 +452,80 @@ function onWindowResize() {
 		camera_ortho.bottom = -new_size/2;
 		camera_ortho.updateProjectionMatrix();
 	}
+
+	dirLightShadowMapViewer.updateForWindowResize();
 }
 
-	function animate() {
-		requestAnimationFrame( animate );
+function animate() {
+	requestAnimationFrame( animate );
 
-		render();
+	render();
 
-		if ( statsEnabled ) stats.update();
+	if ( statsEnabled ) stats.update();
+}
+
+function render() {
+	if (controls.enabled) {	// 透視投影
+		
+		// 初期レンダーのアニメーション。どんどん大きくする
+		if (inited && renderer.info.render.frame <= 120) {
+			var s = renderer.info.render.frame / 120;	
+			s = s * (2 - s);// ease-outの動きにしてほしい
+			scene.scale.set(s, s, s);
+		}
+		// 更新処理
+		controls.update();
+		if (useSSAO) {
+			composer.render();
+		} else {
+			renderer.render( scene, camera );
+		}
+		// シャドウマップカメラを更新
+		renderShadowMapViewers();
+	} else {	// 平行投影
+		controls_ortho.update();
+		renderer.render( scene, camera_ortho );
 	}
 
-	function render() {
-		if (controls.enabled) {	// 透視投影
-			
-			// 初期レンダーはどんどん大きくする
-			if (inited && renderer.info.render.frame <= 60) {
-				var s = renderer.info.render.frame / 60;	
-				scene.scale.set(s, s, s);
-			}
-
-
-			controls.update();
-			if (useSSAO) {
-				composer.render();
-			} else {
-				renderer.render( scene, camera );
-			}
-		} else {	// 平行投影
-			controls_ortho.update();
-			renderer.render( scene, camera_ortho );
-		}
-
-		// auto rotation
-		if (isAutoRot) {
-			var timer = performance.now();
-			group_root.rotation.y = timer *0.0002;
-		}
-		// gui control
-		//mesh_ground.visible = params.ground;
-		//renderer.toneMappingExposure = params.exposure;
-
-		// 初期表示時に遠くから接近するアニメーション
-
+	// auto rotation
+	if (isAutoRot) {
+		var timer = performance.now();
+		group_root.rotation.y = timer *0.0002;
 	}
+	// gui control
+	//mesh_ground.visible = params.ground;
+	//renderer.toneMappingExposure = params.exposure;
+
+	// 初期表示時に遠くから接近するアニメーション
+
+}
+
+function renderShadowMapViewers() {
+	if (dirLightShadowMapViewer == undefined) {
+		return;
+	}
+	dirLightShadowMapViewer.render( renderer );
+	//spotLightShadowMapViewer.render( renderer );
+}
+
+function initMisc() {//shadow
+	renderer = new THREE.WebGLRenderer( { antialias: true } );
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.type = THREE.BasicShadowMap;
+
+	// Mouse control
+	//var controls = new OrbitControls( camera, renderer.domElement );
+	//controls.target.set( 0, 2, 0 );
+	//controls.update();
+
+	//clock = new THREE.Clock();
+
+	//stats = new Stats();
+	//document.body.appendChild( stats.dom );
+}
+
 
 //--------------------------------------------
 // ボタン
