@@ -399,7 +399,7 @@ let camLeftRotButtonOn = false;
 let camOrthoButtonOn = false;
 //ボタンのイベント状態表示用
 const buttonStateDisplay = document.getElementById("buttonStateDisplay");
-
+buttonStateDisplay.style.display = "none";//release:true, debug:false. デバッグのときに解除してください
 // イベントハンドラーの設定
 setupEventHandlers();
 
