@@ -1,0 +1,56 @@
+<krpano>
+	
+	<!--
+		ios_iframe_fullscreen.xml
+		krpano 1.20
+		
+		A helper script for getting into a kind of 'fullscreen mode' on iOS 
+		from inside an iframe.
+		
+		iOS itself doesn't support the HTML5 Fullscreen API and so there is no
+		way to make the pano window larger than the iframe area itself.
+		This script therefore adds a fake-fullscreen-mode support and redirects
+		the browser window directly to the inner iframe page to make the iframe
+		itself beeing the full browser page.
+		
+		Note: this scripts only enables the fullscreen contextmenu item, 
+		custom xml elements that are depending on the 'device.fullscreensupport'
+		state would need to get enabled manually. That's because the xml parsing
+		and xml element 'devices filtering' is happening before this script is
+		running. For 'manual enabling' e.g. remove the 'fullscreensupport' 
+		devices check from the related elements in the xml files.
+	-->
+	
+	<action name="ios_iframe_fullscreen_redirect" type="Javascript" autorun="preinit" if="device.ios AND device.iframe AND !device.fullscreensupport"><![CDATA[
+			
+		// fake the fullscreen support information
+		krpano.device.fullscreensupport = true;
+				
+		// enable the contextmenu fullscreen item
+		krpano.contextmenu.fullscreen = true;
+				
+		// define a custom 'fullscreen' attribute
+		delete krpano.fullscreen;
+		krpano.registerattribute("fullscreen", false, 
+			function(newstate)
+			{
+				if(newstate)
+				{
+					// when setting fullscreen to true, redirect the top frame to the iframe url
+					try
+					{
+						top.location = window.location;
+					}
+					catch(err)
+					{}
+				}
+			}
+			,
+			function()
+			{
+				return false;
+			});
+			
+	]]></action>
+
+</krpano>

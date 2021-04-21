@@ -1,0 +1,257 @@
+﻿<krpano>
+	
+	<!--
+		krpano Depthmap Navigation Controls 
+		- Arrow-keys or WASD-keys navigation on desktop
+		- On-Screen-Touchpad for mobile devices
+		- VR controllers for WebVR usage
+	-->
+
+	<!-- remove the default keyboard controls -->
+	<control keycodesleft="" keycodesright="" keycodesup="" keycodesdown="" />
+
+	<!-- keyboard keycodes -->
+	<keyb up="38" down="40" left="37" right="39" w="87" a="65" s="83" d="68" q="81" y="89" z="90" shift="16" ctrl="17" space="32" pageup="33" pagedown="34" />
+	
+	<!-- state variables for walking around in the depthmap pano -->
+	<walkaround forward="0" backward="0" left="0" right="0" up="0" down="0" faster="0" />
+	
+	<!-- keyboard event handling -->
+	<events name="depthmap_handlekey" keep="true" onkeydown="depthmap_handlekey(1);" onkeyup="depthmap_handlekey(0);" />
+	
+	<action name="depthmap_handlekey" args="keypressed" scope="local">
+		if( keycode == keyb.up    OR keycode == keyb.w, copy(walkaround.forward,  keypressed);
+		  , keycode == keyb.down  OR keycode == keyb.s, copy(walkaround.backward, keypressed);
+		  , keycode == keyb.left  OR keycode == keyb.a, copy(walkaround.left,     keypressed);
+		  , keycode == keyb.right OR keycode == keyb.d, copy(walkaround.right,    keypressed);
+		  , keycode == keyb.shift,                      copy(walkaround.faster,   keypressed);
+		  , keycode == keyb.ctrl,                       copy(walkaround.strafe,   keypressed);
+		  , keycode == keyb.q,                          copy(walkaround.up,       keypressed);
+		  , keycode == keyb.y OR keycode == keyb.z,     copy(walkaround.down,     keypressed);
+		);
+	</action>
+	
+	<!-- walking/flying controls -->
+	<action name="depthmap_walkaroundmovement" autorun="onstart" type="Javascript"><![CDATA[
+		var speed = 0.5;
+		var friction = 0.9;
+		var walkaround = krpano.get("walkaround");
+		var vx=0, vy=0, vz=0;
+		var rx=0;
+		var touchpad_last_axis = [[0,0],[0,0]];
+		var touchpad_move_speed = 5.0;
+		var touchpad_rotate_speed = 1.5;
+		var joystick_move_speed = 1.0;
+		var joystick_rotate_speed = 1.0;
+		
+		// add a global 'depthmap_movemode' variable for setting the control mode: "walking" or "flying"
+		krpano.depthmap_movemode = "walking";
+		
+		krpano.actions.renderloop( function()
+		{
+			vx *= friction;
+			vy *= friction;
+			vz *= friction;
+			rx *= friction;
+			
+			if (vx*vx + vy*vy + vz*vz < 0.001)
+				vx = vy = vz = 0;
+				
+			if (rx*rx < 0.01)
+				rx = 0;
+			
+			var h = krpano.view.hlookat * Math.PI / 180.0;
+			var v = krpano.view.vlookat * Math.PI / 180.0;
+			
+			// 2D direction vector (walking)
+			var lx2 = Math.sin(h);
+			var lz2 = Math.cos(h);
+			
+			// 3D direction vector (flying)
+			var tmp = Math.cos(v);
+			var lx3 = lx2 * tmp;
+			var ly3 = Math.sin(v);
+			var lz3 = lz2 * tmp;
+			
+			var wx = walkaround.right - walkaround.left;
+			var wz = walkaround.forward - walkaround.backward;
+			var wy = walkaround.up - walkaround.down;
+			
+			// handle the touchpad or joystick input from the vr-controllers
+			var vrcontroller = krpano.webvr ? krpano.webvr.vrcontroller : null;
+			if (vrcontroller)
+			{
+				var vrcontroller_count = vrcontroller.length;
+				for (var i=0; i < vrcontroller_count; i++)
+				{
+					var controller = vrcontroller[i];
+					var axes = controller.axes;
+					if (axes)
+					{
+						// when having a depthmap: move around (1), otherwise only rotate the pano (0)
+						var controlmode = (krpano.display.havedepthmap || krpano.display.depthbuffer) ? 1 : 0;
+					
+						// when having two controllers use the touchpad/joystick from the right one only for rotating
+						if (vrcontroller_count == 2 && controller.hand == "right")
+							controlmode = 0;
+						
+						// joystick or touchpad?
+						var y_axis_scale = +1.3;
+						var is_touchpad = false;
+						
+						if (controller.id == "Daydream Controller" || controller.id == "Oculus Go Controller")
+						{
+							is_touchpad = true;
+						}
+						else if(controller.id == "OpenVR Gamepad")	// HTC Vive Controller
+						{
+							is_touchpad = true;
+							y_axis_scale *= -1.0;
+						}
+						 
+						if (is_touchpad)
+						{
+							//  special touchpad control (swiping like)
+							if (axes[0] != 0 && axes[1] != 0)
+							{
+								var dx = +(axes[0] - touchpad_last_axis[i][0]);
+								var dz = -(axes[1] - touchpad_last_axis[i][1]) * y_axis_scale;
+								touchpad_last_axis[i][0] = axes[0];
+								touchpad_last_axis[i][1] = axes[1];
+								
+								if (Math.abs(dx) > 0.3) dx = 0;		// too fast changes are probably no swipes
+								if (Math.abs(dz) > 0.3) dz = 0;
+								
+								if (controlmode == 0)	// rotate
+								{
+									rx += touchpad_rotate_speed * dx;
+								}
+								else	// move
+								{
+									vx += touchpad_move_speed * ( dx*lz2 + dz*lx2);
+									vz += touchpad_move_speed * (-dx*lx2 + dz*lz2);
+								}
+							}
+						}
+						else
+						{
+							// joystick - direct control
+
+							if (controlmode == 0)	// rotate
+							{
+								if (Math.abs(axes[0]) > 0.2)
+								{
+									rx = joystick_rotate_speed * axes[0];
+								}
+							}
+							else	// move
+							{
+							 	// ignore too small values, some vr-controllers, e.g. Windows MR ones, are constantly reporting small wrong values
+								if ( Math.abs(axes[0]) > 0.2 ) wx += joystick_move_speed * axes[0];
+								if ( Math.abs(axes[1]) > 0.2 ) wz -= joystick_move_speed * axes[1];
+							}
+						}
+					}
+				}
+			}
+			
+			var wl = Math.sqrt(wx*wx + wz*wz);
+			if (wl > 0)
+			{
+				// normalize the moving speed
+				wl = speed / wl;
+				if (walkaround.faster > 0)
+					wl *= 3;
+					
+				wx *= wl;
+				wz *= wl;
+				if (wx)
+				{
+					vx += wx*lz2;
+					vz -= wx*lx2;
+				}
+				if (wz)
+				{ 
+					if (krpano.depthmap_movemode == "flying")
+					{
+						vx += wz*lx3;
+						vz += wz*lz3; 
+						vy += wz*ly3;
+					}
+					else
+					{
+						vx += wz*lx2;  
+						vz += wz*lz2; 
+					}
+				}
+			}
+			
+			if (wy)
+			{
+				vy -= 0.5*speed*wy;
+			}
+			
+			krpano.view.tx += vx;
+			krpano.view.ty += vy;
+			krpano.view.tz += vz;
+			
+			if (rx != 0)
+			{
+				krpano.webvr.hlookatoffset += rx;
+			}
+		});
+	]]></action>
+	
+	
+	
+	<!-- some buttons -->
+	
+	<style name="depthmap_button" type="text" css="text-align:center;" padding="4 8" mergedalpha="false" bgborder="0 0xFFFFFF 1" bgroundedge="1" bgshadow="0 1 4 0x000000 1.0" ondown="set(bgcolor, 0xDDDDDD);" onup="set(bgcolor, 0xFFFFFF);" />
+	<style name="depthmap_info" type="text" css="color:#FFFFFF;text-align:center;" bg="false" txtshadow="0 1 4 0x000000 1.0" enabled="false" />
+	
+	<layer name="moveup" keep="true" style="depthmap_button" html="▲" align="rightbottom" x="20" y="50" ondown="set(walkaround.up,1);"   onup="set(walkaround.up,0);" />
+	<layer name="movedn" keep="true" style="depthmap_button" html="▼" align="rightbottom" x="20" y="20" ondown="set(walkaround.down,1);" onup="set(walkaround.down,0);" />
+	
+
+
+	<!-- info texts -->
+	<layer name="depthmap_walkinfo" keep="true" style="depthmap_info" align="center" y="+25%" html="Walk around using the[br]Keyboard Arrow- or W,A,S,D-keys" devices="desktop" />
+	
+	
+
+	<!-- drag area for touch devices -->
+	<layer name="walkinfo_touch" keep="true" type="text" align="bottom"
+		y="85"
+		html="Hold down here[br]and drag around[br]for walking" bgalpha="0.3" devices="handheld"
+		css="color:#FFFFFF;text-align:center;" txtshadow="0 1 4 0x000000 1.0"
+		vcenter="true"
+		width="140" height="140" bgroundedge="180"
+		ondown="dragcontrol();"
+		/>
+	
+	<events name="walkinfo_touch" keep="true" devices="mobile"
+		onresize="if(stagewidth GT stageheight,
+					set(layer[walkinfo_touch], align=rightbottom, x=80, y=40);
+				  ,
+					set(layer[walkinfo_touch], align=bottom, x=0, y=85);
+				);
+				" 
+		/>
+
+	<action name="dragcontrol" scope="local">
+		copy(mx,mouse.x);
+		copy(my,mouse.y);
+		tween(caller.alpha,0);
+		asyncloop(caller.pressed,
+				calc(walkaround.forward, (mouse.y - my) * -0.25);
+				calc(walkaround.left,    (mouse.x - mx) * -0.25);
+				copy(mx, mouse.x);
+				copy(my, mouse.y);
+		  ,
+			set(walkaround.left, 0);
+			set(walkaround.forward, 0);
+			tween(caller.alpha,1);
+		);
+	</action>
+	
+</krpano>

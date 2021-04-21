@@ -1,0 +1,30 @@
+<krpano>
+	
+	<!--
+		iphone_fullscreen_swipe.xml
+		krpano 1.20
+		
+		A helper script for getting into fullscreen mode on the iPhone.
+	-->
+	
+	<events name="iphone_fullscreen_swipe" keep="true" devices="iphone"
+			oniphonefullscreen="iphone_fullscreen_swipe();"
+			/>
+		
+	<action name="iphone_fullscreen_swipe" scope="localonly">
+		if(global.display.iphonefullscreen GT 0,
+			if(!global.layer[iphone_fullscreen_info],
+				addlayer('iphone_fullscreen_info', infolayer);
+				set(infolayer, type=text, css='color:#FFFFFF; font-size:26px; font-weight:bold; text-align:center;', txtshadow='0 0 8 0x000000 1', mergedalpha=false, bgcolor=0x000000, bgalpha=0.7, bgcapture=true, align=lefttop, x=0, y=0, width=100%, height=100%, vcenter=true, keep=true, zorder=9999, safearea=false);
+				if(global.display.iphonefullscreen == 1,
+					set(infolayer.html, '[span style="font-size:60px;"]⇡[/span][br]Swipe Up');
+				  ,
+					set(infolayer.html, '[span style="font-size:60px;"]⇣ ⇡[/span][br]Swipe Down and Up');
+				);
+			);
+		  ,
+			removelayer('iphone_fullscreen_info');
+		);
+	</action>
+	
+</krpano>
