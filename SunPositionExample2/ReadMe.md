@@ -9,3 +9,6 @@ AutoTimeBPというブループリントクラスをワールドに置くこと�
 
 ・AutoTimeBP
 Time Speed: 時刻の進む速さ。
+
+**収録されているアセットについて
+BlenderのアドオンOpenStreetMapを使用して取得した東京都八重洲付近の3Dデータです。
