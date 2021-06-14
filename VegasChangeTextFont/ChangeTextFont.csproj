@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\Users\tyanai1\AppData\Local\VEGAS Pro\17.0\Script Menu\</OutputPath>
+    <OutputPath>C:\Users\administrator\AppData\Local\VEGAS Pro\17.0\Script Menu\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
