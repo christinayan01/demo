@@ -6,7 +6,7 @@
  * christinayan01 by Takahiro Yanai.
  * 
  * DLLの格納先はモジュールパス参照
- * C:\Users\tyanai1\AppData\Local\VEGAS Pro\17.0\Script Menu\
+ * C:\Users\administrator\AppData\Local\VEGAS Pro\17.0\Script Menu\
  */
 
 using System;
@@ -27,16 +27,6 @@ namespace vegastest1 {
             }
 
             // Common dialog.
-#if false
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.FileName = "Input Font Family";
-            if (sfd.ShowDialog() != DialogResult.OK) {
-                return;
-            }
-
-            //Font name
-            string font = System.IO.Path.GetFileNameWithoutExtension(sfd.FileName);
-#else
             ChangeTextFont.Form1 sfd = new ChangeTextFont.Form1();
             if (sfd.ShowDialog() != DialogResult.OK)
             {
@@ -47,7 +37,6 @@ namespace vegastest1 {
             // fontSize=0のときは、現在のテキストイベントのフォントサイズを使用します
             string fontFamily = sfd.textBox1_get();
             float fontSize = sfd.textBox2_get();
-#endif
 
             // Vegasプロジェクト設定の一時フォルダに一時ファイルを出力するためのファイル名
             string tempRtfFileName = vegas.Project.Video.PrerenderedFilesFolder + "temp.rtf";
