@@ -201,9 +201,9 @@ namespace vegastest1 {
             }
 
             // サンプル：画像はこれで追加できる
-            //AddMediaImage(vegas.Project, @"C:\Users\tyanai1\Desktop\mouse.png", 0, );
+            //AddMediaImage(vegas.Project, @"C:\Users\Administrator\Desktop\mouse.png", 0, );
             {
-                Media media = Media.CreateInstance(vegas.Project, @"C:\Users\tyanai1\Desktop\mouse.png");
+                Media media = Media.CreateInstance(vegas.Project, @"C:\Users\Administrator\Desktop\mouse.png");
                 Track track = vegas.Project.Tracks[0];
                 if (track.MediaType == MediaType.Video)
                 {
