@@ -6,7 +6,7 @@
  * christinayan01 by Takahiro Yanai.
  * 
  * DLLの格納先はモジュールパス参照
- * C:\Users\tyanai1\AppData\Local\VEGAS Pro\17.0\Script Menu\
+ * C:\Users\Administrator\AppData\Local\VEGAS Pro\17.0\Script Menu\
  */
 
 using System;
