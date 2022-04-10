@@ -6,8 +6,8 @@
 StaticMeshにスポーンしたいスタティックメッシュをセットしてください。
 
 ### イベントグラフ
-Set Timer by Event：Timeには、何秒間隔でスポーンするかをセットします。  
-Spawn Actor：Classにスポーンしたいメッシュをセットしたブループリントをセットします。  
+**Set Timer by Event** ：[Time]に何秒間隔でスポーンするかをセットします。  
+**Spawn Actor** ：[Class]にBaibainNewBPをセットします。  
 
 ### ワールドに配置
 BaibainNewBPをワールドに配置してください。
