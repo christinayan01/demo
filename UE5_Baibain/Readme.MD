@@ -1,15 +1,18 @@
 ドラえもんに出てくるひみつ道具「バイバイン」を再現するブループリントです。
 
-# BaibainNewBP
+# バージョン情報
+version: Unreal Engine 5.0.0  
 
-### コンポーネント
+# BaibainNewBP の設定項目 (settings.)
+
+### コンポーネント (component.)
 StaticMeshにスポーンしたいスタティックメッシュをセットしてください。
 
-### イベントグラフ
+### イベントグラフ (event graph.)
 **Set Timer by Event** ：[Time]に何秒間隔でスポーンするかをセットします。  
 **Spawn Actor** ：[Class]にBaibainNewBPをセットします。  
 
-### ワールドに配置
+### ワールドに配置 (put your world.)
 BaibainNewBPをワールドに配置してください。
 
 Playして確認してください。
