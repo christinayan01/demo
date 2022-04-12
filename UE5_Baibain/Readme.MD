@@ -6,7 +6,7 @@ version: Unreal Engine 5.0.0
 # BaibainNewBP の設定項目 (settings.)
 
 ### コンポーネント (component.)
-StaticMeshにスポーンしたいスタティックメッシュをセットしてください。
+**StaticMesh**: スポーンしたいStatic Meshをセットしてください。
 
 ### イベントグラフ (event graph.)
 **Set Timer by Event** ：[Time]に何秒間隔でスポーンするかをセットします。  
