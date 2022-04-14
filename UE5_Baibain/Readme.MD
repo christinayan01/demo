@@ -27,3 +27,7 @@ YouTubeに公開しましたので、ブループリントを自作してみて�
 
 [[実験] UE5: バイバイン中の栗まんじゅうを宇宙に飛ばした後どうなったかを確認する～完結編～](https://www.youtube.com/watch?v=gw-PWYG5TLI)   
 [![alt設定](http://img.youtube.com/vi/gw-PWYG5TLI/0.jpg)](https://www.youtube.com/watch?v=gw-PWYG5TLI)  
+
+# 参考サイト Rederence
+ * https://twitter.com/christinayan01/status/1512722433266307072  
+ * [【話題】UE5のCity Sampleでドラえもんでおなじみ「栗まんじゅうをバイバインする回」の再現をしてみました](https://christinayan01.jp/architecture/archives/20871)  
