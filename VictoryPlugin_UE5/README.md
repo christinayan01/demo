@@ -1,0 +1,1 @@
+VictoryPluginのRuntimeでCSVファイルが読み込みできる部分だけUE5でビルドしたものです。
